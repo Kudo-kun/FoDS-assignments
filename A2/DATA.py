@@ -17,7 +17,7 @@ class UnlimitedDataWorks:
             self.count += 1
             res = (dataframe["lat"] ** a) * (dataframe["lon"] ** b)
             self.data.insert(self.count, "col" + str(a) + str(b), res, True)
-
+              
         # min-max normalize the data:
         self.data = (self.data-self.data.min()) / (self.data.max()-self.data.min())
         dataframe = (dataframe-dataframe.min()) / (dataframe.max()-dataframe.min())
