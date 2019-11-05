@@ -33,9 +33,9 @@ class RegressionModel:
         """
         ss_tot = sum(np.square(np.mean(self.y) - self.y))
         ss_res = sum(np.square(self.x @ weights) - self.y)
-        rmse = sqrt(0.5 * sum(np.square(self.x @ weights - self.y)))
+        rmse = sqrt(0.5 * sum(np.square(self.x @ weights - self.y))/43786)
         r2 = (1-(ss_res / ss_tot))
-        return [r2*100, rmse]
+        return [r2, rmse]
 
     def gradient_descent(self):
         """
@@ -43,14 +43,14 @@ class RegressionModel:
         """
         lr = 8.5*(10 ** -7)
         prev_err, count = (10 ** 10), 0
-        W = np.random.random(self.N)
+        W = np.asarray([5.0, 5.0, 5.0])
         while True:
             diff = ((self.X @ W) - self.Y)
             err = 0.5 * (diff @ diff)
             grad = (self.X.T @ diff)
             if count % 250 == 0:
-                print("epoch =", count, "\nerr_diff =", prev_err-err)
-                print("error =", err, "\n", W)
+                print("epoch =", count, "| err_diff =", prev_err-err)
+                print("error =", err, "||", W)
                 print("score =", self.score(W), end="\n\n")
             W -= lr * grad
             if abs(prev_err-err) <= 0.00001:
@@ -69,12 +69,10 @@ class RegressionModel:
         for count in range(epochs):
             diff = ((self.X @ W) - self.Y)
             err = 0.5 * (diff @ diff)
-            for j in range(self.N):
-                W[j] -= lr * (self.X[count].dot(W.T) -
-                              self.Y[count]) * self.X[count][j]
+            W -= lr * (((self.X[count] @ W) - self.Y[count]) * self.X[count])
             if count % 250 == 0:
                 print("epoch =", count)
-                print("error =", err, "\n", W)
+                print("error =", err, "||", W)
                 print("score =", self.score(W), end="\n\n")
 
     def gradient_descent_L1_reg(self):
@@ -96,8 +94,8 @@ class RegressionModel:
                 err = 0.5 * ((diff @ diff) + l1*sum([abs(w) for w in W]))
                 if count % 250 == 0:
                     print("L1 hyperparamter =", l1, end=", ")
-                    print("epoch =", count, "\nerr_diff =", prev_err-err)
-                    print("error = ", err, "\n", W)
+                    print("epoch =", count, "| err_diff =", prev_err-err)
+                    print("error = ", err, "||", W)
                     print("score =", self.score(W), end="\n\n")
                 sgn_w = np.array([sgn(w) for w in W])
                 W -= lr * ((self.X.T @ diff) + 0.5*l1*sgn_w)
@@ -131,8 +129,8 @@ class RegressionModel:
                 err = 0.5 * ((diff @ diff) + l2*sum([w*w for w in W]))
                 if count % 250 == 0:
                     print("L2 hyperparamter =", l2, end=", ")
-                    print("epoch =", count, "\nerr_diff =", prev_err-err)
-                    print("error = ", err, "\n", W)
+                    print("epoch =", count, "| err_diff =", prev_err-err)
+                    print("error = ", err, "||", W)
                     print("score =", self.score(W), end="\n\n")
                 W -= lr * ((self.X.T @ diff) + l2*W)
                 if abs(prev_err-err) <= 0.05:

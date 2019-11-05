@@ -19,8 +19,7 @@ model = RegressionModel(N=len(pre_processor.exp),
                         yval=y_val)
 
 
-# model.gradient_descent()
-model.stocastic_gradient_descent(epochs=30000)
+model.gradient_descent()
 # model.gradient_descent_L1_reg()
 # model.gradient_descent_L2_reg()
 # model.fit()
