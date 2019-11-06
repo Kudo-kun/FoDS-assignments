@@ -138,3 +138,6 @@ class RegressionModel:
         A = self.X.T @ self.X
         W = (np.linalg.inv(A)) @ B
         print(W, self.score(W))
+        diff = ((self.X @ W) - self.Y)
+        err = 0.5 * (diff @ diff)
+        print("train_error =", err)

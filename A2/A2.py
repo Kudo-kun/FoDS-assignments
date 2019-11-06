@@ -18,8 +18,8 @@ model = RegressionModel(N=len(pre_processor.exp),
                         xval=x_val,
                         yval=y_val)
 
-
+model.fit()
 model.gradient_descent()
 # model.gradient_descent_L1_reg()
 # model.gradient_descent_L2_reg()
-# model.fit()
+

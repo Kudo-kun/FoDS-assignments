@@ -18,11 +18,11 @@ class RegressionModel:
         yval :: validation training data    (86975 X 1)
         """
         self.N = N
-        self.X = np.array(X)
+        self.X = np.matrix(X)
         self.Y = np.array(Y)
-        self.x = np.array(x)
+        self.x = np.matrix(x)
         self.y = np.array(y)
-        self.xval = np.array(xval)
+        self.xval = np.matrix(xval)
         self.yval = np.array(yval)
 
     def score(self, weights):
@@ -43,15 +43,15 @@ class RegressionModel:
         """
         lr = 8.5*(10 ** -7)
         prev_err, count = (10 ** 10), 0
-        W = np.asarray([5.0, 5.0, 5.0])
+        W = np.random.randn(self.N)
         while True:
             diff = ((self.X @ W) - self.Y)
             err = 0.5 * (diff @ diff)
             grad = (self.X.T @ diff)
             if count % 250 == 0:
-                print("epoch =", count, "| err_diff =", prev_err-err)
-                print("error =", err, "||", W)
-                print("score =", self.score(W), end="\n\n")
+                    print("epoch =", count, "| err_diff =", prev_err-err)
+                    print("error = ", err, "||", W)
+                    print("score =", self.score(W), end="\n\n")
             W -= lr * grad
             if abs(prev_err-err) <= 0.00001:
                 break
