@@ -31,10 +31,10 @@ class RegressionModel:
         wrt the generated weights
         """
         ss_tot = sum(np.square(np.mean(self.y) - self.y))
-        ss_res = sum(np.square(self.x @ weights) - self.y)
-        rmse = sqrt(0.5 * sum(np.square(self.x @ weights - self.y))/43786)
+        ss_res = sum(np.square((self.x @ weights) - self.y))
+        rmse = sqrt(ss_res/len(self.x))
         r2 = (1-(ss_res / ss_tot))
-        return [r2, rmse]
+        return [r2*100, rmse]
 
     def gradient_descent(self):
         """
@@ -42,7 +42,7 @@ class RegressionModel:
         """
         lr = 8.5*(10 ** -7)
         prev_err, count = (10 ** 10), 0
-        W = np.asarray([5.0]*self.N)
+        W = np.random.randn(self.N)
         while True:
             diff = ((self.X @ W) - self.Y)
             err = 0.5 * (diff @ diff)
@@ -52,7 +52,7 @@ class RegressionModel:
                     print("error = ", err, "||", W)
                     print("score =", self.score(W), end="\n\n")
             W -= lr * grad
-            if abs(prev_err-err) <= 0.0001:
+            if abs(prev_err-err) <= (10 ** -4):
                 break
             prev_err = err
             count += 1

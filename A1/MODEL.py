@@ -33,9 +33,9 @@ class RegressionModel:
         """
         ss_tot = sum(np.square(np.mean(self.y) - self.y))
         ss_res = sum(np.square(self.x @ weights) - self.y)
-        rmse = sqrt(0.5 * sum(np.square(self.x @ weights - self.y))/43786)
+        rmse = sqrt(ss_res/len(self.x))
         r2 = (1-(ss_res / ss_tot))
-        return [r2, rmse]
+        return [r2*100, rmse]
 
     def gradient_descent(self):
         """
