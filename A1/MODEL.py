@@ -7,7 +7,6 @@ from math import sqrt
 
 
 class RegressionModel:
-
     def __init__(self, N, X, Y, x, y, xval, yval):
         """
         X :: training data                  (304113 x 3)
@@ -18,11 +17,11 @@ class RegressionModel:
         yval :: validation training data    (86975 X 1)
         """
         self.N = N
-        self.X = np.matrix(X)
+        self.X = np.array(X)
         self.Y = np.array(Y)
-        self.x = np.matrix(x)
+        self.x = np.array(x)
         self.y = np.array(y)
-        self.xval = np.matrix(xval)
+        self.xval = np.array(xval)
         self.yval = np.array(yval)
 
     def score(self, weights):
@@ -32,7 +31,7 @@ class RegressionModel:
         wrt the generated weights
         """
         ss_tot = sum(np.square(np.mean(self.y) - self.y))
-        ss_res = sum(np.square(self.x @ weights) - self.y)
+        ss_res = sum(np.square((self.x @ weights) - self.y))
         rmse = sqrt(ss_res/len(self.x))
         r2 = (1-(ss_res / ss_tot))
         return [r2*100, rmse]
@@ -53,7 +52,7 @@ class RegressionModel:
                     print("error = ", err, "||", W)
                     print("score =", self.score(W), end="\n\n")
             W -= lr * grad
-            if abs(prev_err-err) <= 0.00001:
+            if abs(prev_err-err) <= (10 ** -4):
                 break
             prev_err = err
             count += 1
@@ -64,7 +63,7 @@ class RegressionModel:
         """
         train till error is almost constant
         """
-        lr = 5*(10 ** -3)
+        lr = 0.05
         W = np.random.randn(self.N)
         for count in range(epochs):
             diff = ((self.X @ W) - self.Y)
@@ -154,3 +153,6 @@ class RegressionModel:
         A = self.X.T @ self.X
         W = (np.linalg.inv(A)) @ B
         print(W, self.score(W))
+        diff = ((self.X @ W) - self.Y)
+        err = 0.5 * (diff @ diff)
+        print("train_error =", err)
