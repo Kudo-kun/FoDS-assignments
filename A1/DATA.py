@@ -12,7 +12,6 @@ class UnlimitedDataWorks:
 
     def train_test_split(self, dataframe):
         normalize = lambda x: ((x - x.min()) / (x.max() - x.min()))
-        dataframe = normalize(dataframe)
         self.data = pd.DataFrame([])
         self.count = -1
         for (a, b) in self.exp:
@@ -20,6 +19,11 @@ class UnlimitedDataWorks:
             res = (dataframe["lat"] ** a) * (dataframe["lon"] ** b)
             self.data.insert(self.count, "col" + str(a) + str(b), res, True)
 
+        self.count += 1 
+        dataframe = normalize(dataframe)
+        self.data = normalize(self.data)
+        self.data["col00"] = [1.0]*len(self.data)
+        
         # generate a 70-20-10 split on the data:
         X = self.data[:304113]
         Y = dataframe["alt"][:304113]

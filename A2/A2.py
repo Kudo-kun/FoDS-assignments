@@ -10,7 +10,7 @@ deg = input("Degree of Polynomial to be fit:")
 pre_processor = UnlimitedDataWorks(deg=int(deg))
 X_train, Y_train, x_val, y_val, x_test, y_test = pre_processor.train_test_split(raw_df)
 
-model = RegressionModel(N=len(pre_processor.exp),
+model = RegressionModel(N=pre_processor.count,
                         X=X_train,
                         Y=Y_train,
                         x=x_test,
