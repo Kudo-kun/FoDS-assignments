@@ -4,7 +4,7 @@ import pandas as pd
 
 columns = ["junk", "lat", "lon", "alt"]
 raw_df = pd.read_csv("3D_spatial_network.txt", sep=',', header=None,
-                     names=columns).drop("junk", 1).sample(frac=1)
+                     names=columns).drop("junk", 1)
 
 deg = input("Degree of Polynomial to be fit:")
 pre_processor = UnlimitedDataWorks(deg=int(deg))

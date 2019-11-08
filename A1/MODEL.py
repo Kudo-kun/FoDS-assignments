@@ -40,8 +40,8 @@ class RegressionModel:
         """
         train till error is almost constant
         """
-        lr = 8.5*(10 ** -7)
-        prev_err, count = (10 ** 10), 0
+        lr = 8e-7
+        prev_err, count = 1e10, 0
         W = np.random.randn(self.N)
         while True:
             diff = ((self.X @ W) - self.Y)
@@ -79,14 +79,14 @@ class RegressionModel:
         attempts a L1 regularization on the data
         considering 10% of training data as validation data
         """
-        W_fin = []
-        lr, l1_fin = 5*(10 ** -7), 0
-        MVLE = (10 ** 10)
+        W_fin = np.array([])
+        lr, l1_fin = 5e-7, 0
+        MVLE = 1e10
         L1_vals = [0.0, 0.05, 0.15, 0.25, 0.35, 0.45,
                    0.55, 0.65, 0.75, 0.85, 0.95, 1.0]
         sgn = lambda x: (x / abs(x))
         for l1 in L1_vals:
-            prev_err, count = (10 ** 10), 0
+            prev_err, count = 1e10, 0
             W = np.random.randn(self.N)
             while True:
                 diff = ((self.X @ W) - self.Y)
@@ -115,13 +115,13 @@ class RegressionModel:
         attempts a L2 regularization on the data
         considering 10% of training data as validation data
         """
-        W_fin = []
-        lr, l2_fin = 5*(10 ** -7), 0
-        MVLE = (10 ** 10)
+        W_fin = np.array([])
+        lr, l2_fin = 5e-7, 0
+        MVLE = 1e10
         L2_vals = [0.05, 0.15, 0.25, 0.35, 0.45,
                    0.55, 0.65, 0.75, 0.85, 0.95]
         for l2 in L2_vals:
-            prev_err, count = (10 ** 10), 0
+            prev_err, count = 1e10, 0
             W = np.random.randn(self.N)
             while True:
                 diff = ((self.X @ W) - self.Y)
@@ -153,6 +153,3 @@ class RegressionModel:
         A = self.X.T @ self.X
         W = (np.linalg.inv(A)) @ B
         print(W, self.score(W))
-        diff = ((self.X @ W) - self.Y)
-        err = 0.5 * (diff @ diff)
-        print("train_error =", err)

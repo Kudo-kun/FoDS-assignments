@@ -11,7 +11,8 @@ class UnlimitedDataWorks:
                     self.exp.append((i, j))
 
     def train_test_split(self, dataframe):
-        dataframe = (dataframe - dataframe.min())/(dataframe.max() - dataframe.min())
+        normalize = lambda x: ((x - x.min()) / (x.max() - x.min()))
+        dataframe = normalize(dataframe)
         self.data = pd.DataFrame([])
         self.count = -1
         for (a, b) in self.exp:
