@@ -22,4 +22,3 @@ model.fit()
 model.gradient_descent()
 # model.gradient_descent_L1_reg()
 # model.gradient_descent_L2_reg()
-

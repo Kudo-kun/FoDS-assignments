@@ -7,6 +7,7 @@ from math import sqrt
 
 
 class RegressionModel:
+
     def __init__(self, N, X, Y, x, y, xval, yval):
         """
         X :: training data                  (304113 x 3)
