@@ -35,12 +35,12 @@ class RegressionModel:
         r2 = (1-(ss_res/ss_tot))
         return [r2*100, rmse]
 
-    def gradient_descent(self):
+    def gradient_descent(self, lr):
         """
         train till error is almost constant
         """
-        prev_err, lr = 1e10, 3e-6
-        W = np.ones(self.N) * 10
+        prev_err = 1e10
+        W = np.random.random(self.N)
         for _ in range(50001):
             diff = ((self.X @ W) - self.Y)
             err = 0.5 * np.sum(np.square(diff))
@@ -56,12 +56,11 @@ class RegressionModel:
         print(err)
         print(W, self.score(W), end="\n\n")
         
-    def stocastic_gradient_descent(self, epochs):
+    def stocastic_gradient_descent(self, epochs, lr):
         """
         train till error is almost constant
         """
-        lr = 0.05
-        W = self.fit()
+        W = np.random.random(self.N)
         for _ in range(epochs):
             diff = ((self.X @ W) - self.Y)
             err = 0.5 * (diff @ diff)
@@ -72,19 +71,19 @@ class RegressionModel:
                 print("error =", err, "||", W)
                 print("score =", self.score(W), end="\n\n")
         
-    def gradient_descent_L1_reg(self):
+    def gradient_descent_L1_reg(self, lr):
         """
         attempts a L1 regularization on the data
         considering 10% of training data as validation data
         """
         W_fin = np.array([])
-        lr, l1_fin = 1e-6, 0
+        l1_fin = 0
         MVLE = 1e10
         L1_vals = np.linspace(0.0, 1.0, 9)
         sgn = lambda x: (x / abs(x))
         for l1 in L1_vals:
             prev_err = 1e10
-            W = np.random.randn(self.N)
+            W = np.random.random(self.N)
             for _ in range(50001):
                 diff = ((self.X @ W) - self.Y)
                 err = 0.5 * ((diff @ diff) + l1*sum([abs(w) for w in W]))
@@ -95,7 +94,7 @@ class RegressionModel:
                     print("score =", self.score(W), end="\n\n")
                 sgn_w = np.array([sgn(w) for w in W])
                 W -= lr * ((self.X.T @ diff) + 0.5*l1*sgn_w)
-                if abs(prev_err-err) < 0.01:
+                if abs(prev_err-err) < 0.005:
                     break
                 prev_err = err
             VLD = ((self.xval @ W) - self.yval)
@@ -107,18 +106,18 @@ class RegressionModel:
         print(MVLE, l1_fin, W_fin)
         print(self.score(W_fin))
 
-    def gradient_descent_L2_reg(self):
+    def gradient_descent_L2_reg(self, lr):
         """
         attempts a L2 regularization on the data
         considering 10% of training data as validation data
         """
         W_fin = np.array([])
-        lr, l2_fin = 1e-6, 0
+        l2_fin = 0
         MVLE = 1e10
         L2_vals = np.linspace(0.0, 1.0, 9)
         for l2 in L2_vals:
             prev_err, count = 1e10, 0
-            W = np.ones(self.N)*10
+            W = np.random.random(self.N)
             for _ in range(50001):
                 diff = ((self.X @ W) - self.Y)
                 err = 0.5 * ((diff @ diff) + l2*sum([w*w for w in W]))
@@ -128,7 +127,7 @@ class RegressionModel:
                     print("error = ", err, "||", W)
                     print("score =", self.score(W), end="\n\n")
                 W -= lr * ((self.X.T @ diff) + l2*W)
-                if abs(prev_err-err) < 0.01:
+                if abs(prev_err-err) < 0.005:
                     break
                 prev_err = err
             VLD = ((self.xval @ W) - self.yval)

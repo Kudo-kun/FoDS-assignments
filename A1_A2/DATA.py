@@ -10,13 +10,14 @@ class UnlimitedDataWorks:
                 if i+j <= deg:
                     self.exp.append((i, j))
 
-    def train_test_split(self, df):
+    def train_test_split(self, df, normalize=False):
         self.data = pd.DataFrame([])
         print("Starting Reality Marble...")
-        for col in df.columns:
-            mx = df[col].max()
-            mn = df[col].min()
-            df[col] = (df[col] - mn)/(mx - mn)
+        if normalize == True:
+            for col in df.columns:
+                mx = df[col].max()
+                mn = df[col].min()
+                df[col] = (df[col] - mn)/(mx - mn)
         for (a, b) in self.exp:
             res = ((df["lat"] ** b) * (df["lon"] ** a))
             self.data.insert(self.count, "col" + str(a) + str(b), res, True)

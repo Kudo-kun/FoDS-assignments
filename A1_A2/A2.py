@@ -8,7 +8,7 @@ raw_df = pd.read_csv("3D_spatial_network.txt", sep=',', header=None,
 
 deg = input("Enter the Degree of the Polynomial:")
 pre_processor = UnlimitedDataWorks(deg=int(deg))
-X_train, Y_train, x_val, y_val, x_test, y_test = pre_processor.train_test_split(raw_df)
+X_train, Y_train, x_val, y_val, x_test, y_test = pre_processor.train_test_split(raw_df, normalize=True)
 
 model = RegressionModel(N=pre_processor.count,
                         X=X_train,
@@ -18,9 +18,9 @@ model = RegressionModel(N=pre_processor.count,
                         xval=x_val,
                         yval=y_val)
 
-model.fit(lam=0.75)     #changing value of lambda sets the regularization coeff
-# model.gradient_descent()
-# model.stocastic_gradient_descent(50000)
-# model.gradient_descent_L1_reg()
-model.gradient_descent_L2_reg()
+# model.fit()
+model.gradient_descent(lr=3e-6)
+# model.stocastic_gradient_descent(50000, lr=0.05)
+# model.gradient_descent_L1_reg(lr=3e-10)
+# model.gradient_descent_L2_reg(lr=3e-5)
 
