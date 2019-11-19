@@ -32,11 +32,11 @@ class ProbabilisticAnalyser:
         ax = plt.gca()
         ax.set_ylim(0, 12)
         plt.xlabel("u")
-        plt.ylabel("prob")
+        plt.ylabel("prob_den")
         ax.xaxis.set_major_locator(mt.FixedLocator([i*0.1 for i in range(1, 1)]))
         ax.plot(xs, prob, linewidth=2, marker='.', markersize=0.25)
         plt.savefig("Fig_" + str(idx) + ".png")
-        # plt.close(1)
+        plt.close(1)
 
     def sequential_bayesian(self):
         count = 0

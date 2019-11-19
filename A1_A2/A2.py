@@ -19,7 +19,7 @@ model = RegressionModel(N=pre_processor.count,
                         yval=y_val)
 
 # model.fit()
-# model.gradient_descent(lr=3e-6)
-# model.stocastic_gradient_descent(50000, lr=0.05)
+model.gradient_descent(lr=3e-6)
+# model.stocastic_gradient_descent(50000, lr=0.1)
 # model.gradient_descent_L1_reg(lr=3e-6)
-model.gradient_descent_L2_reg(lr=3e-6)
+# model.gradient_descent_L2_reg(lr=3e-6)

@@ -41,7 +41,7 @@ class RegressionModel:
         train till error is almost constant
         """
         prev_err = 1e10
-        W = np.random.random(self.N)
+        W = self.fit()-5
         for _ in range(50001):
             diff = ((self.X @ W) - self.Y)
             err = 0.5 * np.sum(np.square(diff))
@@ -148,12 +148,14 @@ class RegressionModel:
         plt.plot(L2_vals, plt_VLE)
         plt.show()
 
-    def fit(self, lam):
+    def fit(self):
         """
         solves for optimal weights using system of
         N linear equations; AW = B, hence, W = inv(A)*B
         """
         B = self.X.T @ self.Y
-        A = ((self.X.T @ self.X) + (lam * np.identity(self.N)))
+        A = self.X.T @ self.X
+        print("det =", np.linalg.det(A))
         W = (np.linalg.inv(A)) @ B
         print(W, self.score(W))
+        return W
