@@ -4,7 +4,7 @@ import pandas as pd
 
 columns = ["junk", "lat", "lon", "alt"]
 raw_df = pd.read_csv("3D_spatial_network.txt", sep=',', header=None,
-                     names=columns).drop("junk", 1).sample(frac=1)
+                     names=columns).drop("junk", 1)
 
 deg = input("Enter the Degree of the Polynomial:")
 pre_processor = UnlimitedDataWorks(deg=int(deg))
@@ -19,8 +19,7 @@ model = RegressionModel(N=pre_processor.count,
                         yval=y_val)
 
 # model.fit()
-model.gradient_descent(lr=3e-6)
+# model.gradient_descent(lr=3e-6)
 # model.stocastic_gradient_descent(50000, lr=0.05)
-# model.gradient_descent_L1_reg(lr=3e-10)
-# model.gradient_descent_L2_reg(lr=3e-5)
-
+# model.gradient_descent_L1_reg(lr=3e-6)
+model.gradient_descent_L2_reg(lr=3e-6)

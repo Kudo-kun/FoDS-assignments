@@ -1,6 +1,7 @@
 import pandas as pd
 import numpy as np
 from math import sqrt
+import matplotlib.pyplot as plt
 
 class RegressionModel:
 
@@ -20,7 +21,7 @@ class RegressionModel:
         self.y = np.array(y)
         self.xval = np.array(xval)
         self.yval = np.array(yval)
-        
+ 
     def score(self, weights):
         """
         the following method helps us find the
@@ -50,8 +51,8 @@ class RegressionModel:
                 print("avg. train err = ", err/(len(self.X)), "||", W)
                 print("score =", self.score(W), end="\n\n")
             W -= lr * grad
-            # if abs(prev_err-err) <= 5e-8:
-            #     break
+            if abs(prev_err-err) <= 5e-15:
+                break
             prev_err = err
         print(err)
         print(W, self.score(W), end="\n\n")
@@ -77,6 +78,7 @@ class RegressionModel:
         considering 10% of training data as validation data
         """
         W_fin = np.array([])
+        plt_VLE = []
         l1_fin = 0
         MVLE = 1e10
         L1_vals = np.linspace(0.0, 1.0, 9)
@@ -97,14 +99,17 @@ class RegressionModel:
                 if abs(prev_err-err) < 0.005:
                     break
                 prev_err = err
-            VLD = ((self.xval @ W) - self.yval)
-            VLE = 0.5 * ((VLD @ VLD) + l1*sum([abs(w) for w in W]))
-            if VLE < MVLE:
+            VLE = (0.5/len(self.xval)) * sum(np.square(self.xval @ W - self.yval))
+            ERR = (0.5/len(self.X)) * sum(np.square(self.X @ W - self.Y))
+            plt_VLE.append(abs(ERR-VLE))
+            if abs(ERR-VLE) < MVLE:
                 W_fin = W
-                l1_fin = l1
-                MVLE = VLE
-        print(MVLE, l1_fin, W_fin)
+                l2_fin = l1
+                MVLE = abs(ERR-VLE)
+        print(MVLE, l2_fin, W_fin)
         print(self.score(W_fin))
+        plt.plot(L1_vals, plt_VLE)
+        plt.show()
 
     def gradient_descent_L2_reg(self, lr):
         """
@@ -112,6 +117,7 @@ class RegressionModel:
         considering 10% of training data as validation data
         """
         W_fin = np.array([])
+        plt_VLE = []
         l2_fin = 0
         MVLE = 1e10
         L2_vals = np.linspace(0.0, 1.0, 9)
@@ -130,14 +136,17 @@ class RegressionModel:
                 if abs(prev_err-err) < 0.005:
                     break
                 prev_err = err
-            VLD = ((self.xval @ W) - self.yval)
-            VLE = 0.5 * ((VLD @ VLD) + l2*(W @ W))
-            if VLE < MVLE:
+            VLE = (0.5/len(self.xval)) * sum(np.square(self.xval @ W - self.yval))
+            ERR = (0.5/len(self.X)) * sum(np.square(self.X @ W - self.Y))
+            plt_VLE.append(abs(ERR-VLE))
+            if abs(ERR-VLE) < MVLE:
                 W_fin = W
                 l2_fin = l2
-                MVLE = VLE
+                MVLE = abs(ERR-VLE)
         print(MVLE, l2_fin, W_fin)
         print(self.score(W_fin))
+        plt.plot(L2_vals, plt_VLE)
+        plt.show()
 
     def fit(self, lam):
         """
@@ -148,4 +157,3 @@ class RegressionModel:
         A = ((self.X.T @ self.X) + (lam * np.identity(self.N)))
         W = (np.linalg.inv(A)) @ B
         print(W, self.score(W))
-        return W

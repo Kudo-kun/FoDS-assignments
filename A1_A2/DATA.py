@@ -29,5 +29,5 @@ class UnlimitedDataWorks:
         xval = self.data[304113:391088]
         yval = df["alt"][304113:391088]
         x = self.data[391088:]
-        y = df["alt"][391088:]   
+        y = df["alt"][391088:]
         return (X, Y, xval, yval, x, y)

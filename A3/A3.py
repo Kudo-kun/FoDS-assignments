@@ -1,7 +1,7 @@
 import numpy as np
-# import matplotlib.pyplot as plt
-# import matplotlib.ticker as mt
-# from scipy.special import gamma, comb
+import matplotlib.pyplot as plt
+import matplotlib.ticker as mt
+from scipy.special import gamma, comb
 from random import shuffle
 
 
