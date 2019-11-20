@@ -30,12 +30,13 @@ class ProbabilisticAnalyser:
         # plotting the graphs
         plt.figure(1)
         ax = plt.gca()
-        ax.set_ylim(0, 12)
+        ax.set_ylim(0, 15)
         plt.xlabel("u")
         plt.ylabel("prob_den")
+        ax.plot(xs, prob)
         ax.xaxis.set_major_locator(mt.FixedLocator([i*0.1 for i in range(1, 1)]))
-        ax.plot(xs, prob, linewidth=2, marker='.', markersize=0.25)
-        plt.savefig("Fig_" + str(idx) + ".png")
+        plt.title("Gamma Distribution params a:{} b:{}.Samples:{}".format(a, b, idx + 1))
+        plt.savefig("distribution_for_samples_{}".format(idx + 1) + str(".png"))
         plt.close(1)
 
     def sequential_bayesian(self):
@@ -58,6 +59,7 @@ class ProbabilisticAnalyser:
         a += m
         b += N-m
         print("final mean =", (a/(a+b)))
+        print(comb(N, m) * (0.5 ** m) * (0.5 ** (N-m)))
         self.beta_plotter(a, b, 0)
 
 analyser = ProbabilisticAnalyser(0.20)

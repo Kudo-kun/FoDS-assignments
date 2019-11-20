@@ -11,7 +11,7 @@ class UnlimitedDataWorks:
                     self.exp.append((i, j))
 
     def train_test_split(self, df, normalize=False):
-        self.data = pd.DataFrame([])
+        data = pd.DataFrame([])
         print("Starting Reality Marble...")
         if normalize == True:
             for col in df.columns:
@@ -20,14 +20,14 @@ class UnlimitedDataWorks:
                 df[col] = (df[col] - mn)/(mx - mn)
         for (a, b) in self.exp:
             res = ((df["lat"] ** b) * (df["lon"] ** a))
-            self.data.insert(self.count, "col" + str(a) + str(b), res, True)
+            data.insert(self.count, "feat " + str(a) + str(b), res, True)
             self.count += 1
         
         # generate a 70-20-10 split on the data:
-        X = self.data[:304113]
+        X = data[:304113]
         Y = df["alt"][:304113]
-        xval = self.data[304113:391088]
+        xval = data[304113:391088]
         yval = df["alt"][304113:391088]
-        x = self.data[391088:]
+        x = data[391088:]
         y = df["alt"][391088:]
         return (X, Y, xval, yval, x, y)

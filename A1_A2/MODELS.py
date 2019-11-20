@@ -41,17 +41,17 @@ class RegressionModel:
         train till error is almost constant
         """
         prev_err = 1e10
-        W = self.fit()-5
-        for _ in range(50001):
+        W = np.random.random(self.N)
+        for _ in range(300001):
             diff = ((self.X @ W) - self.Y)
             err = 0.5 * np.sum(np.square(diff))
             grad = (self.X.T @ diff)
-            if _ % 500 == 0:
+            if _ % 750 == 0:
                 print("epoch =", _, "| err_diff =", prev_err-err)
                 print("avg. train err = ", err/(len(self.X)), "||", W)
                 print("score =", self.score(W), end="\n\n")
             W -= lr * grad
-            if abs(prev_err-err) <= 5e-15:
+            if abs(prev_err-err) <= 5e-5:
                 break
             prev_err = err
         print(err)
@@ -67,7 +67,7 @@ class RegressionModel:
             err = 0.5 * (diff @ diff)
             idx = np.random.randint(0, len(self.X))
             W -= lr * (((self.X[idx] @ W) - self.Y[idx]) * self.X[idx])
-            if _ % 500 == 0:
+            if _ % 750 == 0:
                 print("epoch =", _)
                 print("error =", err, "||", W)
                 print("score =", self.score(W), end="\n\n")
@@ -89,14 +89,14 @@ class RegressionModel:
             for _ in range(50001):
                 diff = ((self.X @ W) - self.Y)
                 err = 0.5 * ((diff @ diff) + l1*sum([abs(w) for w in W]))
-                if _ % 500 == 0:
+                if _ % 750 == 0:
                     print("L1 hyperparamter =", l1, end=", ")
                     print("epoch =", _, "| err_diff =", prev_err-err)
                     print("error = ", err, "||", W)
                     print("score =", self.score(W), end="\n\n")
                 sgn_w = np.array([sgn(w) for w in W])
                 W -= lr * ((self.X.T @ diff) + 0.5*l1*sgn_w)
-                if abs(prev_err-err) < 0.005:
+                if abs(prev_err-err) < 5e-3:
                     break
                 prev_err = err
             VLE = (0.5/len(self.xval)) * sum(np.square(self.xval @ W - self.yval))
@@ -127,13 +127,13 @@ class RegressionModel:
             for _ in range(50001):
                 diff = ((self.X @ W) - self.Y)
                 err = 0.5 * ((diff @ diff) + l2*sum([w*w for w in W]))
-                if _ % 500 == 0:
+                if _ % 750 == 0:
                     print("L2 hyperparamter =", l2, end=", ")
                     print("epoch =", _, "| err_diff =", prev_err-err)
                     print("error = ", err, "||", W)
                     print("score =", self.score(W), end="\n\n")
                 W -= lr * ((self.X.T @ diff) + l2*W)
-                if abs(prev_err-err) < 0.005:
+                if abs(prev_err-err) < 5e-3:
                     break
                 prev_err = err
             VLE = (0.5/len(self.xval)) * sum(np.square(self.xval @ W - self.yval))
@@ -155,7 +155,6 @@ class RegressionModel:
         """
         B = self.X.T @ self.Y
         A = self.X.T @ self.X
-        print("det =", np.linalg.det(A))
         W = (np.linalg.inv(A)) @ B
         print(W, self.score(W))
-        return W
+        
