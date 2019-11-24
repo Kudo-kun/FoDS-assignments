@@ -3,6 +3,7 @@ import numpy as np
 from math import sqrt
 import matplotlib.pyplot as plt
 
+
 class RegressionModel:
 
     def __init__(self, N, X, Y, x, y, xval, yval):
@@ -21,7 +22,7 @@ class RegressionModel:
         self.y = np.array(y)
         self.xval = np.array(xval)
         self.yval = np.array(yval)
- 
+        
     def score(self, weights):
         """
         the following method helps us find the
