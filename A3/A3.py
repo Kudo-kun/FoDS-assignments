@@ -34,7 +34,7 @@ class ProbabilisticAnalyser:
         plt.xlabel("u")
         plt.ylabel("prob_den")
         ax.plot(xs, prob)
-        ax.xaxis.set_major_locator(mt.FixedLocator([i*0.1 for i in range(1, 1)]))
+        ax.xaxis.set_major_locator(mt.FixedLocator([i*0.1 for i in range(0, 11)]))
         plt.title("Gamma Distribution params a:{} b:{}.Samples:{}".format(a, b, idx + 1))
         plt.savefig("distribution_for_samples_{}".format(idx + 1) + str(".png"))
         plt.close(1)
