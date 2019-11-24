@@ -44,8 +44,8 @@ class RegressionModel:
         prev_err = 1e10
         W = np.random.random(self.N)
         for _ in range(300001):
-            diff = ((self.X @ W) - self.Y)
-            err = 0.5 * np.sum(np.square(diff))
+            diff = ((self.X @ W.T) - self.Y)
+            err = 0.5 * (diff @ diff)
             grad = (self.X.T @ diff)
             if _ % 750 == 0:
                 print("epoch =", _, "| err_diff =", prev_err-err)
@@ -67,7 +67,7 @@ class RegressionModel:
             diff = ((self.X @ W) - self.Y)
             err = 0.5 * (diff @ diff)
             idx = np.random.randint(0, len(self.X))
-            W -= lr * (((self.X[idx] @ W) - self.Y[idx]) * self.X[idx])
+            W -= lr * (((self.X[idx] @ W.T) - self.Y[idx]) * self.X[idx])
             if _ % 750 == 0:
                 print("epoch =", _)
                 print("error =", err, "||", W)
@@ -88,7 +88,7 @@ class RegressionModel:
             prev_err = 1e10
             W = np.random.random(self.N)
             for _ in range(50001):
-                diff = ((self.X @ W) - self.Y)
+                diff = ((self.X @ W.T) - self.Y)
                 err = 0.5 * ((diff @ diff) + l1*sum([abs(w) for w in W]))
                 if _ % 750 == 0:
                     print("L1 hyperparamter =", l1, end=", ")
@@ -105,9 +105,9 @@ class RegressionModel:
             plt_VLE.append(abs(ERR-VLE))
             if abs(ERR-VLE) < MVLE:
                 W_fin = W
-                l2_fin = l1
+                l1_fin = l1
                 MVLE = abs(ERR-VLE)
-        print(MVLE, l2_fin, W_fin)
+        print(MVLE, l1_fin, W_fin)
         print(self.score(W_fin))
         plt.plot(L1_vals, plt_VLE)
         plt.show()
@@ -126,7 +126,7 @@ class RegressionModel:
             prev_err, count = 1e10, 0
             W = np.random.random(self.N)
             for _ in range(50001):
-                diff = ((self.X @ W) - self.Y)
+                diff = ((self.X @ W.T) - self.Y)
                 err = 0.5 * ((diff @ diff) + l2*sum([w*w for w in W]))
                 if _ % 750 == 0:
                     print("L2 hyperparamter =", l2, end=", ")
