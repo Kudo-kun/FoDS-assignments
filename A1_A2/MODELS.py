@@ -22,7 +22,7 @@ class RegressionModel:
         self.y = np.array(y)
         self.xval = np.array(xval)
         self.yval = np.array(yval)
-        
+
     def score(self, weights):
         """
         the following method helps us find the
@@ -43,7 +43,7 @@ class RegressionModel:
         """
         prev_err = 1e10
         W = np.random.random(self.N)
-        for _ in range(300001):
+        for _ in range(50001):
             diff = ((self.X @ W.T) - self.Y)
             err = 0.5 * (diff @ diff)
             grad = (self.X.T @ diff)
@@ -57,7 +57,7 @@ class RegressionModel:
             prev_err = err
         print(err)
         print(W, self.score(W), end="\n\n")
-        
+
     def stocastic_gradient_descent(self, epochs, lr):
         """
         train till error is almost constant
@@ -157,5 +157,4 @@ class RegressionModel:
         B = self.X.T @ self.Y
         A = self.X.T @ self.X
         W = (np.linalg.inv(A)) @ B
-        print(W, self.score(W))
-        
+        print(W, self.score(W)
